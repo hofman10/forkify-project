@@ -1,0 +1,22 @@
+import View from "./View.js";
+//ovo
+import previewView from "./previewView.js";
+import icons from "url:../../img/icons.svg";
+
+class ResultsView extends View {
+  _parentElement = document.querySelector(".results");
+
+  _errorMessage =
+    "Nema pronadjenih recepata za vas unos!!! Pokusajte ponovo 😊";
+
+  _successMessage = "";
+
+  _generateMarkup() {
+    //console.log(this._data);
+    return this._data
+      .map((result) => previewView.render(result, false))
+      .join("");
+  }
+}
+
+export default new ResultsView();
