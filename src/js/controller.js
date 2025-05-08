@@ -134,6 +134,10 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+const newFeature = function () {
+  console.log("Dobrodosli soderi");
+};
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
 
@@ -145,6 +149,8 @@ const init = function () {
   paginationView.addHandlerClick(controlPagination);
 
   addRecipeView.addHandlerUpload(controlAddRecipe);
+
+  newFeature();
 };
 
 init();
