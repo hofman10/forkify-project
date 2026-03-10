@@ -12,12 +12,11 @@ const timeout = function (s) {
 export const getJSON = async function (url) {
   try {
     const res = await Promise.race([fetch(url), timeout(TIME_OUT_SEC)]);
-    const podaci = await res.json();
-    if (!res.ok)
-      throw new Error(
-        `Podaci.message: ${podaci.message}, res.status:  ${res.status}`
-      );
-    return podaci;
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(`${data.message} (Status: ${res.status})`);
+
+    return data;
   } catch (err) {
     throw err;
   }
@@ -35,12 +34,11 @@ export const sendJSON = async function (url, uploadData) {
       }),
       timeout(TIME_OUT_SEC),
     ]);
-    const podaci = await res.json();
-    if (!res.ok)
-      throw new Error(
-        `Podaci.message: ${podaci.message}, res.status:  ${res.status}`
-      );
-    return podaci;
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(`${data.message} (Status: ${res.status})`);
+
+    return data;
   } catch (err) {
     throw err;
   }

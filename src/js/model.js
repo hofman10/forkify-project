@@ -1,5 +1,4 @@
 import { async } from "regenerator-runtime";
-
 import { API_URL, RES_PER_PAGE, KEY, MODEL_CLOSE_SEC } from "./config.js";
 import { getJSON, sendJSON } from "./helpers.js";
 
@@ -32,17 +31,12 @@ const createRecipeObject = function (data) {
 
 export const loadRecipe = async function (id) {
   try {
-    //ubacivanje za key
-    const podaci = await getJSON(`${API_URL}${id}?key=${KEY}`);
-    state.recipe = createRecipeObject(podaci);
-    if (state.bookmarks.some((bookmark) => bookmark.id === id)) {
-      state.recipe.bookmarked = true;
-    } else {
-      state.recipe.bookmarked = false;
-    }
-    //console.log(state.recipe);
+    const data = await getJSON(`${API_URL}${id}?key=${KEY}`);
+    state.recipe = createRecipeObject(data);
+    state.recipe.bookmarked = state.bookmarks.some(
+      (bookmark) => bookmark.id === id,
+    );
   } catch (err) {
-    //console.error(`${err} 💥💥💥`);
     throw err;
   }
 };
@@ -52,7 +46,7 @@ export const loadSearchResults = async function (query) {
     state.search.query = query;
 
     const data = await getJSON(`${API_URL}?search=${query}&key=${KEY}`);
-    console.log(data);
+
     state.search.results = data.data.recipes.map((rec) => {
       return {
         id: rec.id,
@@ -62,10 +56,9 @@ export const loadSearchResults = async function (query) {
         ...(rec.key && { key: rec.key }),
       };
     });
-    //console.log(state.search.results);
+
     state.search.page = 1;
   } catch (err) {
-    //console.error(`${err} 💥💥💥`);
     throw err;
   }
 };
@@ -79,13 +72,11 @@ export const getSearchResultsPage = function (page = state.search.page) {
 };
 
 export const updateServings = function (newServings) {
-  console.log(state.recipe.ingredients.map((ing) => ing.quantity));
   state.recipe.ingredients.forEach((ing) => {
     ing.quantity = (ing.quantity * newServings) / state.recipe.servings;
   });
 
   state.recipe.servings = newServings;
-  console.log(state.recipe.ingredients.map((ing) => ing.quantity));
 };
 
 const persistBookmarks = function () {
@@ -93,10 +84,8 @@ const persistBookmarks = function () {
 };
 
 export const addBookmark = function (recipe) {
-  // Add bookmark
   state.bookmarks.push(recipe);
 
-  //Mark current recipe as bookmarked
   if (recipe.id === state.recipe.id) {
     state.recipe.bookmarked = true;
   }
@@ -105,11 +94,9 @@ export const addBookmark = function (recipe) {
 };
 
 export const deleteBookmark = function (id) {
-  //Delete bookmark
   const index = state.bookmarks.findIndex((el) => el.id === id);
   state.bookmarks.splice(index, 1);
 
-  //Mark current recipe as NOT bookmarked
   if (id === state.recipe.id) {
     state.recipe.bookmarked = false;
   }
@@ -126,24 +113,18 @@ const init = function () {
 
 init();
 
-const clearBookmarks = function () {
-  localStorage.clear("bookmarks");
-};
-
-// clearBookmarks();
-
 export const uploadRecipe = async function (newRecipe) {
   try {
-    //console.log(Object.entries(newRecipe));
     const ingredients = Object.entries(newRecipe)
       .filter((entry) => entry[0].startsWith("ingredient") && entry[1] !== "")
       .map((ing) => {
         const ingArr = ing[1].split(",").map((el) => el.trim());
-        // const ingArr = ing[1].replaceAll(" ", "").split(",");
+
         if (ingArr.length !== 3)
           throw new Error(
-            "Pogresan format u kucanju namirnica. Koristite pravilan"
+            "Invalid ingredient format. Please use the correct format: 'Quantity, Unit, Description'",
           );
+
         const [quantity, unit, description] = ingArr;
         return { quantity: quantity ? +quantity : null, unit, description };
       });
@@ -157,7 +138,6 @@ export const uploadRecipe = async function (newRecipe) {
       servings: +newRecipe.servings,
       ingredients,
     };
-    console.log(recipe);
 
     const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
     state.recipe = createRecipeObject(data);
@@ -166,5 +146,3 @@ export const uploadRecipe = async function (newRecipe) {
     throw err;
   }
 };
-
-//u terminal kucam git init. Dobijemo ovu poruku Initialized empty Git repository sto znaci da smo u nasem foleru kreirali lokal repozitori koji ce da sadrzi citav nas kod. Da bi ovo spojio sa githubom kucam git config --global user.name hofman10, pa git config --global user.email nbijelic29@gmail.com

@@ -1,17 +1,15 @@
 import View from "./View.js";
-
 import icons from "url:../../img/icons.svg";
 import fracty from "fracty";
 
 class RecipeView extends View {
   _parentElement = document.querySelector(".recipe");
-  _errorMessage =
-    "Zao nam je ali ne mozemo da pronadjemo ovaj recept. Molimo Vas pokusajte ponovo";
+  _errorMessage = "We could not find that recipe. Please try another one!";
   _successMessage = "";
 
   addHandlerRender(handler) {
     ["hashchange", "load"].forEach((ev) =>
-      window.addEventListener(ev, handler)
+      window.addEventListener(ev, handler),
     );
   }
 
@@ -19,9 +17,8 @@ class RecipeView extends View {
     this._parentElement.addEventListener("click", function (e) {
       const btn = e.target.closest(".btn--update-servings");
       if (!btn) return;
-      console.log(btn);
+
       const updateTo = +btn.dataset.updateTo;
-      console.log(updateTo);
       if (updateTo > 0) handler(updateTo);
     });
   }
@@ -38,8 +35,8 @@ class RecipeView extends View {
     return `
         <figure class="recipe__fig">
           <img src="${this._data.image}" alt="${
-      this._data.title
-    }" class="recipe__img" />
+            this._data.title
+          }" class="recipe__img" />
           <h1 class="recipe__title">
             <span>${this._data.title}</span>
           </h1>
@@ -92,8 +89,8 @@ class RecipeView extends View {
           <button class="btn--round btn--bookmark">
             <svg class="">
               <use href="${icons}#icon-bookmark${
-      this._data.bookmarked ? "-fill" : ""
-    }"></use>
+                this._data.bookmarked ? "-fill" : ""
+              }"></use>
             </svg>
           </button>
         </div>

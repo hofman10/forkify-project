@@ -3,9 +3,7 @@ import icons from "url:../../img/icons.svg";
 
 class AddRecipeView extends View {
   _parentElement = document.querySelector(".upload");
-
-  //ovo
-  _successMessage = "Recept je uspjesno uploodaovan 🖖";
+  _successMessage = "Recipe was successfully uploaded! 🎉";
 
   _window = document.querySelector(".add-recipe-window");
   _overlay = document.querySelector(".overlay");
@@ -41,6 +39,7 @@ class AddRecipeView extends View {
       handler(data);
     });
   }
+
   _generateMarkup() {}
 }
 
