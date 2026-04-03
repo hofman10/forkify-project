@@ -1,7 +1,7 @@
 import View from "./View.js";
 import iconsUrl from "url:../../img/icons.svg";
 
-const icons = new URL(iconsUrl, window.location.href).pathname;
+const icons = iconsUrl;
 
 class PaginationView extends View {
   _parentElement = document.querySelector(".pagination");

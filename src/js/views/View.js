@@ -1,6 +1,6 @@
 import iconsUrl from "url:../../img/icons.svg";
 
-const icons = new URL(iconsUrl, window.location.href).pathname;
+const icons = iconsUrl;
 
 export default class View {
   _data;
