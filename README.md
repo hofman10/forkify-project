@@ -23,7 +23,7 @@ A modern recipe application built with vanilla JavaScript that allows users to s
 
 ## 🚀 Live Demo
 
-[View Live Demo](#) _(Add your deployed link here)_
+[View Live Demo](https://forkify-recepies-app.netlify.app/)
 
 ## 🛠️ Technologies & Tools
 
