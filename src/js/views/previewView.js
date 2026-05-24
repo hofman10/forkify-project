@@ -1,13 +1,12 @@
 import View from "./View.js";
-import iconsUrl from "url:../../img/icons.svg";
-
-const icons = new URL(iconsUrl, window.location.href).pathname;
+import icons from "url:../../img/icons.svg";
 
 class PreviewView extends View {
   _parentElement = "";
 
   _generateMarkup() {
     const id = window.location.hash.slice(1);
+
     return `
         <li class="preview">
             <a class="preview__link ${
